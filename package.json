@@ -1,15 +1,15 @@
 {
   "name": "remote-edit2",
   "main": "./lib/main.coffee",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Browse and edit remote files using SFTP and FTP",
   "homepage": "https://github.com/duxet/remote-edit2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/duxet/remote-edit2.git"
+    "url": "https://github.com/urban-1/remote-edit2.git"
   },
   "bugs": {
-    "url": "https://github.com/duxet/remote-edit2/issues"
+    "url": "https://github.com/urban-1/remote-edit2/issues"
   },
   "license": "MIT",
   "author": {
@@ -24,7 +24,7 @@
     "async": "<2.0.0",
     "file-size": ">=0.0.5",
     "moment": ">=2.7.0",
-    "ssh2": "~0.4.7",
+    "ssh2": ">=0.5.2",
     "serializable": ">=1.0.0",
     "string-hash": ">=1.1.0",
     "osenv": ">=0.1.0",
@@ -52,5 +52,10 @@
     "remote",
     "edit",
     "sync"
-  ]
+  ],
+  "apmInstallSource": {
+    "type": "git",
+    "source": "https://github.com/urban-1/remote-edit2.git",
+    "sha": "e3145de753e29cccb33023a6220bfdadd6f30713"
+  }
 }

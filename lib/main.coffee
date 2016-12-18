@@ -134,7 +134,7 @@ module.exports =
     @filesView
 
   initializeIpdwIfNecessary: ->
-    if atom.config.get 'remote-edit.notifications'
+    if atom.config.get 'remote-edit2.notifications'
       stop = false
       for editor in atom.workspace.getTextEditors() when !stop
         if editor instanceof RemoteEditEditor
@@ -145,7 +145,7 @@ module.exports =
     if @ipdw is undefined
       InterProcessDataWatcher ?= require './model/inter-process-data-watcher'
       fs = require 'fs-plus'
-      @ipdw = new InterProcessDataWatcher(fs.absolute(atom.config.get('remote-edit.defaultSerializePath')))
+      @ipdw = new InterProcessDataWatcher(fs.absolute(atom.config.get('remote-edit2.defaultSerializePath')))
     else
       @ipdw
 

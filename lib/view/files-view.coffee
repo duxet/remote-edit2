@@ -40,7 +40,8 @@ module.exports =
       @listenForEvents()
 
     connect: (connectionOptions = {}, connect_path = false) ->
-      dir = upath.normalize(if connect_path then connect_path else if atom.config.get('remote-edit.rememberLastOpenDirectory') and @host.lastOpenDirectory? then @host.lastOpenDirectory else @host.directory)
+      console.debug "re-connecting (FilesView::connect) to #{connect_path}"
+      dir = upath.normalize(if connect_path then connect_path else if atom.config.get('remote-edit2.rememberLastOpenDirectory') and @host.lastOpenDirectory? then @host.lastOpenDirectory else @host.directory)
       async.waterfall([
         (callback) =>
           if @host.usePassword and !connectionOptions.password?
@@ -74,6 +75,7 @@ module.exports =
             @setError("You do not have read permission to what you've specified as the default directory! See the console for more info.")
           else if err.code is 2 and @path is @host.lastOpenDirectory
             # no such file, can occur if lastOpenDirectory is used and the dir has been removed
+            console.debug  "No such file, can occur if lastOpenDirectory is used and the dir has been removed"
             @host.lastOpenDirectory = undefined
             @connect(connectionOptions)
           else if @host.usePassword and (err.code == 530 or err.level == "connection-ssh")
@@ -130,7 +132,7 @@ module.exports =
         (callback) =>
           @host.getFilesMetadata(dir, callback)
         (items, callback) =>
-          items = _.sortBy(items, 'isFile') if atom.config.get 'remote-edit.foldersOnTop'
+          items = _.sortBy(items, 'isFile') if atom.config.get 'remote-edit2.foldersOnTop'
           @setItems(items)
           callback(undefined, undefined)
       ], (err, result) =>
@@ -187,13 +189,21 @@ module.exports =
 
     openFile: (file) =>
       dtime = moment().format("HH:mm:ss DD/MM/YY")
+      # urban-1: Seems to me that we were trying to open a file while the host
+      # was disconnected... TODO: Fix connecting every time...
       async.waterfall([
+        (callback) =>
+          if !@host.isConnected()
+            @setMessage("Connecting...")
+            @host.connect(callback)
+          else
+            callback(null)
         (callback) =>
           @getDefaultSaveDirForHostAndFile(file, callback)
         (savePath, callback) =>
           savePath = savePath + path.sep + dtime.replace(/([^a-z0-9\s]+)/gi, '').replace(/([\s]+)/gi, '-') + "_" + file.name
           localFile = new LocalFile(savePath, file, dtime, @host)
-          @host.getFile(localFile, callback)
+
           uri = path.normalize(savePath)
           filePane = atom.workspace.paneForURI(uri)
           if filePane
@@ -237,6 +247,9 @@ module.exports =
         callback(err, savePath)
       )
 
+    #
+    # Called on event listener to handle all actions of the file list
+    #
     confirmed: (item) ->
       async.waterfall([
         (callback) =>
@@ -251,7 +264,7 @@ module.exports =
             @host.invalidate()
             @populate(item.path)
           else if item.isLink
-            if atom.config.get('remote-edit.followLinks')
+            if atom.config.get('remote-edit2.followLinks')
               @populate(item.path)
             else
               @openFile(item)
@@ -313,7 +326,7 @@ module.exports =
 
       @list.empty()
       if @items.length
-        for item in items
+        for item in @items
           itemView = $(@viewForItem(item))
           itemView.data('select-list-item', item)
           @list.append(itemView)

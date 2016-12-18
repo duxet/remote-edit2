@@ -71,7 +71,7 @@ module.exports =
       @initiateUpload()
 
     initiateUpload: ->
-      if atom.config.get 'remote-edit.uploadOnSave'
+      if atom.config.get 'remote-edit2.uploadOnSave'
         @upload()
       else
         Dialog ?= require '../view/dialog'

@@ -34,7 +34,7 @@ module.exports =
       for host in @hostList
         @addSubscriptionToHost(host)
 
-      if atom.config.get 'remote-edit.notifications'
+      if atom.config.get 'remote-edit2.notifications'
         RemoteEditEditor ?= require '../model/remote-edit-editor'
 
         @disposables.add atom.workspace.observeTextEditors((editor) =>
@@ -69,7 +69,7 @@ module.exports =
         @hostList = _.reject(@hostList, ((val) -> val == host))
         @emitter.emit 'did-change'
 
-      if atom.config.get 'remote-edit.notifications'
+      if atom.config.get 'remote-edit2.notifications'
         @disposables.add host.onInfo (info) => atom.notifications.add(info.type, info.message)
 
     addNewHost: (host) ->

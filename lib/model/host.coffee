@@ -14,10 +14,10 @@ module.exports =
     constructor: (@alias = null, @hostname, @directory = "/", @username = osenv.user(), @port, @localFiles = [], @usePassword, @lastOpenDirectory) ->
       @emitter = new Emitter
       @searchKey = @hostname
-      atom.config.observe "remote-edit.filterHostsUsing", (settings) =>
+      atom.config.observe 'remote-edit2.filterHostsUsing', (settings) =>
         @searchKey = @getSearchKey(settings) ? @searchKey
 
-      if atom.config.get 'remote-edit.clearFileList'
+      if atom.config.get 'remote-edit2.clearFileList'
         _.each(@localFiles, (val) =>
           @removeLocalFile(val)
           )

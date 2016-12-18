@@ -11,7 +11,7 @@ describe "remote-edit:", ->
 
     workspaceElement = atom.views.getView(atom.workspace)
     activationPromise = null
-    atom.config.set 'remote-edit.defaultSerializePath', "#{fixture.getSerializePath()}"
+    atom.config.set 'remote-edit2.defaultSerializePath', "#{fixture.getSerializePath()}"
 
     waitsForPromise ->
       atom.workspace.open()
