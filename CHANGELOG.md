@@ -1,3 +1,10 @@
+## 3.1.1 (02/09/2017)
+
+* Clean up localFiles on tab close
+* Avoid using timestamp on local file name so already opened files are detected
+
+## ...
+
 ## 1.7.0
 * Convert package to conform to Atom 1.0 API
 

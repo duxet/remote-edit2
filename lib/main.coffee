@@ -172,7 +172,7 @@ module.exports =
         host = Host.deserialize(JSON.parse(decodeURIComponent(query.host)))
 
         atom.project.bufferForPath(localFile.path).then (buffer) ->
-          params = {buffer: buffer, registerEditor: true, host: host, localFile: localFile}
+          params = {buffer: buffer, registerEditor: true, host: host, autoHeight: false, localFile: localFile}
           # copied from workspace.buildTextEditor
           ws = atom.workspace
           params = _.extend({
